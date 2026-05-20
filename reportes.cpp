@@ -34,8 +34,12 @@ void menuReportes() {
         cout << "\n4. Ventas por mes";
         cout << "\n5. Ordenar precio ascendente";
         cout << "\n6. Ordenar precio descendente";
-        cout << "\n7. Exportar reporte TXT";
-        cout << "\n8. Regresar";
+        cout << "\n7. Ordenar stock ascendente";
+        cout << "\n8. Ordenar stock descendente";
+        cout << "\n9. Ventas acumuladas por producto";
+        cout << "\n10. Exportar reporte a TXT";
+        cout << "\n11. Regresar";
+
 
         cout << "\n\nSeleccione una opcion: ";
         cin >> opcion;
@@ -79,23 +83,31 @@ void menuReportes() {
                 ordenarPrecioDesc();
                 break;
 
-            case 7:
+           case 7:
+                ordenarStockAsc();
+                break;
+           case 8:
+                ordenarStockDesc();
+                break;
+           case 9:
+                ventasAcumuladas();
+                break;
+           case 10:
                 exportarReporteTXT();
                 break;
-
-            case 8:
-                cout << "\nRegresando...\n";
+           case 11:
+                cout << "\nRegresando al menu principal...\n";
                 break;
-
             default:
                 cout << "\nOpcion invalida.\n";
         }
 
     } while(opcion != 8);
 }
-// ===============================
+
+
+
 // PRODUCTOS MENOR STOCK
-// ===============================
 void productosMenorStock() {
 
     vector<Producto> productos;
@@ -106,17 +118,13 @@ void productosMenorStock() {
         return;
     }
 
-    // Bubble Sort por stock ascendente
     for(size_t i = 0; i < productos.size(); i++) {
 
         for(size_t j = 0; j < productos.size() - 1; j++) {
 
             if(productos[j].stock > productos[j + 1].stock) {
-
                 Producto aux = productos[j];
-
                 productos[j] = productos[j + 1];
-
                 productos[j + 1] = aux;
             }
         }
@@ -129,21 +137,15 @@ void productosMenorStock() {
         if(p.activo) {
 
             cout << "\nCodigo: " << p.codigo;
-
             cout << "\nNombre: " << p.nombre;
-
             cout << "\nStock: " << p.stock;
-
             cout << "\nPrecio: Q " << p.precio;
-
             cout << "\n-----------------------------------";
         }
     }
 }
 
-// ===============================
 // PRODUCTOS MAS VENDIDOS
-// ===============================
 void productosMasVendidos() {
 
     ifstream archivo("ventas.dat", ios::binary);
@@ -171,11 +173,8 @@ void productosMasVendidos() {
             for(auto &v : vendidos) {
 
                 if(v.codigo == detalle.codigo) {
-
                     v.totalVendido += detalle.cantidad;
-
                     encontrado = true;
-
                     break;
                 }
             }
@@ -183,11 +182,8 @@ void productosMasVendidos() {
             if(!encontrado) {
 
                 ProductoVendido nuevo;
-
                 nuevo.codigo = detalle.codigo;
-
                 nuevo.totalVendido = detalle.cantidad;
-
                 vendidos.push_back(nuevo);
             }
         }
@@ -195,7 +191,6 @@ void productosMasVendidos() {
 
     archivo.close();
 
-    // Bubble Sort descendente
     for(size_t i = 0; i < vendidos.size(); i++) {
 
         for(size_t j = 0; j < vendidos.size() - 1; j++) {
@@ -224,19 +219,14 @@ void productosMasVendidos() {
         if(idx != -1) {
 
             cout << "\nCodigo: " << productos[idx].codigo;
-
             cout << "\nNombre: " << productos[idx].nombre;
-
             cout << "\nCantidad Vendida: " << v.totalVendido;
-
             cout << "\n-----------------------------------";
         }
     }
 }
 
-// ===============================
 // VENTAS TOTALES DEL DIA
-// ===============================
 void ventasTotalesDia() {
 
     ifstream archivo("ventas.dat", ios::binary);
@@ -270,13 +260,9 @@ void ventasTotalesDia() {
     while(archivo.read((char*)&venta, sizeof(venta))) {
 
         char fechaVenta[11];
-
         strncpy(fechaVenta, venta.fecha, 10);
-
         fechaVenta[10] = '\0';
-
         if(strcmp(fechaActual, fechaVenta) == 0) {
-
             totalDia += venta.total;
         }
 
@@ -289,16 +275,13 @@ void ventasTotalesDia() {
     archivo.close();
 
     cout << "\n========== VENTAS DEL DIA ==========\n";
-
     cout << "\nFecha: " << fechaActual;
-
     cout << "\nTotal vendido: Q " << totalDia << endl;
 }
 
 
-// ===============================
+
 // VENTAS POR MES
-// ===============================
 void ventasPorMes() {
 
     float ventasMes[12] = {0};
@@ -356,9 +339,8 @@ void ventasPorMes() {
     }
 }
 
-// ===============================
+
 // ORDENAR POR PRECIO ASCENDENTE
-// ===============================
 void ordenarPrecioAsc() {
 
     vector<Producto> productos;
@@ -392,21 +374,15 @@ void ordenarPrecioAsc() {
         if(p.activo) {
 
             cout << "\nCodigo: " << p.codigo;
-
             cout << "\nNombre: " << p.nombre;
-
             cout << "\nPrecio: Q " << p.precio;
-
             cout << "\nStock: " << p.stock;
-
             cout << "\n-----------------------------------";
         }
     }
 }
 
-// ===============================
 // ORDENAR POR PRECIO DESCENDENTE
-// ===============================
 void ordenarPrecioDesc() {
 
     vector<Producto> productos;
@@ -440,14 +416,221 @@ void ordenarPrecioDesc() {
         if(p.activo) {
 
             cout << "\nCodigo: " << p.codigo;
-
             cout << "\nNombre: " << p.nombre;
-
             cout << "\nPrecio: Q " << p.precio;
-
             cout << "\nStock: " << p.stock;
-
             cout << "\n-----------------------------------";
         }
     }
+}
+
+// ORDENAR STOCK ASCENDENTE
+void ordenarStockAsc() {
+
+    vector<Producto> productos;
+
+    if(!cargarProductos(productos)) {
+
+        cout << "\nNo existe informacion.\n";
+        return;
+    }
+
+    for(size_t i = 0; i < productos.size(); i++) {
+
+        for(size_t j = 0; j < productos.size() - 1; j++) {
+
+            if(productos[j].stock > productos[j + 1].stock) {
+
+                Producto aux = productos[j];
+
+                productos[j] = productos[j + 1];
+
+                productos[j + 1] = aux;
+            }
+        }
+    }
+
+    cout << "\n========== STOCK ASCENDENTE ==========\n";
+
+    for(const auto &p : productos) {
+
+        if(p.activo) {
+
+            cout << "\nCodigo: " << p.codigo;
+            cout << "\nNombre: " << p.nombre;
+            cout << "\nStock: " << p.stock;
+            cout << "\nPrecio: Q " << p.precio;
+            cout << "\n-----------------------------------";
+        }
+    }
+}
+
+
+// ORDENAR STOCK DESCENDENTE
+void ordenarStockDesc() {
+
+    vector<Producto> productos;
+
+    if(!cargarProductos(productos)) {
+
+        cout << "\nNo existe informacion.\n";
+        return;
+    }
+
+    for(size_t i = 0; i < productos.size(); i++) {
+
+        for(size_t j = 0; j < productos.size() - 1; j++) {
+
+            if(productos[j].stock < productos[j + 1].stock) {
+
+                Producto aux = productos[j];
+
+                productos[j] = productos[j + 1];
+
+                productos[j + 1] = aux;
+            }
+        }
+    }
+
+    cout << "\n========== STOCK DESCENDENTE ==========\n";
+
+    for(const auto &p : productos) {
+
+        if(p.activo) {
+
+            cout << "\nCodigo: " << p.codigo;
+            cout << "\nNombre: " << p.nombre;
+            cout << "\nStock: " << p.stock;
+            cout << "\nPrecio: Q " << p.precio;
+            cout << "\n-----------------------------------";
+        }
+    }
+}
+
+// VENTAS ACUMULADAS
+
+void ventasAcumuladas() {
+
+    ifstream archivo("ventas.dat", ios::binary);
+
+    if(!archivo) {
+
+        cout << "\nNo existen ventas registradas.\n";
+        return;
+    }
+
+    vector<ProductoVendido> vendidos;
+
+    VentaHeader venta;
+
+    while(archivo.read((char*)&venta, sizeof(venta))) {
+
+        for(int i = 0; i < venta.detallesCount; i++) {
+
+            DetalleVenta detalle;
+
+            archivo.read((char*)&detalle, sizeof(detalle));
+
+            bool encontrado = false;
+
+            for(auto &v : vendidos) {
+
+                if(v.codigo == detalle.codigo) {
+
+                    v.totalVendido += detalle.cantidad;
+
+                    encontrado = true;
+
+                    break;
+                }
+            }
+
+            if(!encontrado) {
+
+                ProductoVendido nuevo;
+
+                nuevo.codigo = detalle.codigo;
+                nuevo.totalVendido = detalle.cantidad;
+                vendidos.push_back(nuevo);
+            }
+        }
+    }
+
+    archivo.close();
+
+    // Bubble Sort descendente
+    for(size_t i = 0; i < vendidos.size(); i++) {
+
+        for(size_t j = 0; j < vendidos.size() - 1; j++) {
+
+            if(vendidos[j].totalVendido < vendidos[j + 1].totalVendido) {
+
+                ProductoVendido aux = vendidos[j];
+
+                vendidos[j] = vendidos[j + 1];
+
+                vendidos[j + 1] = aux;
+            }
+        }
+    }
+
+    vector<Producto> productos;
+
+    cargarProductos(productos);
+
+    cout << "\n========== VENTAS ACUMULADAS ==========\n";
+
+    for(const auto &v : vendidos) {
+
+        int idx = buscarIndiceProducto(productos, v.codigo);
+
+        if(idx != -1) {
+
+            cout << "\nCodigo: " << productos[idx].codigo;
+            cout << "\nNombre: " << productos[idx].nombre;
+            cout << "\nCantidad Vendida: " << v.totalVendido;
+            cout << "\n-----------------------------------";
+        }
+    }
+}
+
+
+// EXPORTAR REPORTE TXT
+
+void exportarReporteTXT() {
+
+    vector<Producto> productos;
+
+    if(!cargarProductos(productos)) {
+
+        cout << "\nNo existe informacion.\n";
+        return;
+    }
+
+    ofstream reporte("reporte.txt");
+
+    if(!reporte) {
+
+        cout << "\nError al crear reporte.\n";
+        return;
+    }
+
+    reporte << "========== REPORTE PRODUCTOS ==========\n";
+
+    for(const auto &p : productos) {
+
+        if(p.activo) {
+
+            reporte << "\nCodigo: " << p.codigo;
+            reporte << "\nNombre: " << p.nombre;
+            reporte << "\nCategoria: " << p.categoria;
+            reporte << "\nStock: " << p.stock;
+            reporte << "\nPrecio: Q " << p.precio;
+            reporte << "\n-----------------------------------";
+        }
+    }
+
+    reporte.close();
+
+    cout << "\nReporte exportado correctamente.\n";
 }
