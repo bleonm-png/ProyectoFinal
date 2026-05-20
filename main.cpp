@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "productos.h"
 #include "ventas.h"
+#include "reportes.h"
 
 using namespace std;
 
@@ -39,7 +40,8 @@ void menu() {
         cout << "\n6. Modificar precio";
         cout << "\n7. Eliminar/desactivar producto";
         cout << "\n8. Crear venta";
-        cout << "\n9. Salir";
+        cout << "\n9. Reportes";
+        cout << "\n10. Salir";
 
         cout << "\n\nSeleccione una opcion: ";
         cin >> opcion;
@@ -79,6 +81,10 @@ void menu() {
                 break;
 
             case 9:
+                menuReportes();
+                break;
+
+            case 10:
                 cout << "\nPrograma finalizado.\n";
                 break;
 
@@ -86,5 +92,5 @@ void menu() {
                 cout << "\nOpcion invalida.\n";
         }
 
-    } while(opcion != 9);
+    } while(opcion != 10);
 }

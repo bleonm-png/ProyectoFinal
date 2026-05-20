@@ -10,5 +10,7 @@ add_executable(ProyectoFinal main.cpp
         auxiliar.h
         productos.h
         productos.cpp
+        reportes.cpp
+        reportes.h
 )
 
