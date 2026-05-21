@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
+#include <cstring>
 
 #include "ventas.h"
 #include "productos.h"
@@ -29,14 +30,91 @@ void crearVenta() {
 
     while(true) {
 
-        cout << "\nCodigo producto (0 salir): ";
-        cin >> codigo;
+        int opcionBusqueda;
 
-        if(codigo == 0) {
+        cout << "\n1. Buscar por codigo";
+        cout << "\n2. Buscar por nombre";
+        cout << "\n3. Finalizar venta";
+
+        cout << "\nSeleccione opcion: ";
+        cin >> opcionBusqueda;
+
+        if(cin.fail()) {
+
+            cout << "\nERROR: Debe ingresar numeros.\n";
+
+            cin.clear();
+            cin.ignore(1000, '\n');
+
+            continue;
+        }
+
+        int idx = -1;
+
+        // ===============================
+        // BUSCAR POR CODIGO
+        // ===============================
+        if(opcionBusqueda == 1) {
+
+            int codigo;
+
+            cout << "\nCodigo producto: ";
+            cin >> codigo;
+
+            idx = buscarIndiceProducto(productos, codigo);
+        }
+
+        // ===============================
+        // BUSCAR POR NOMBRE
+        // ===============================
+        else if(opcionBusqueda == 2) {
+
+            char nombreBuscado[40];
+
+            cin.ignore(1000, '\n');
+
+            cout << "\nNombre producto: ";
+
+            cin.getline(nombreBuscado, 40);
+
+            for(size_t i = 0; i < productos.size(); i++) {
+
+                if(
+                    strstr(productos[i].nombre, nombreBuscado) != nullptr
+                    && productos[i].activo
+                ) {
+
+                    idx = i;
+
+                    break;
+                }
+            }
+        }
+
+        // ===============================
+        // FINALIZAR VENTA
+        // ===============================
+        else if(opcionBusqueda == 3) {
+
             break;
         }
 
-        int idx = buscarIndiceProducto(productos, codigo);
+        else {
+
+            cout << "\nOpcion invalida.\n";
+
+            continue;
+        }
+
+        // ===============================
+        // VALIDAR PRODUCTO
+        // ===============================
+        if(idx == -1) {
+
+            cout << "\nProducto no encontrado.\n";
+
+            continue;
+        }
 
         if(idx == -1) {
 

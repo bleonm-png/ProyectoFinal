@@ -102,7 +102,7 @@ void menuReportes() {
                 cout << "\nOpcion invalida.\n";
         }
 
-    } while(opcion != 8);
+    } while(opcion != 11);
 }
 
 
