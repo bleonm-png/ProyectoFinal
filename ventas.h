@@ -1,7 +1,6 @@
 #ifndef VENTAS_H
 #define VENTAS_H
 
-// STRUCT DETALLE VENTA
 struct DetalleVenta {
 
     int codigo;
@@ -10,7 +9,7 @@ struct DetalleVenta {
     float subtotal;
 };
 
-// STRUCT VENTA
+
 struct VentaHeader {
 
     int id;
@@ -23,7 +22,6 @@ struct VentaHeader {
     int detallesCount;
 };
 
-// FUNCIONES
 void crearVenta();
 
 #endif

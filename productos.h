@@ -16,7 +16,6 @@ struct Producto {
     bool activo;
 };
 
-// FUNCIONES PRODUCTOS
 void registrarProducto();
 void listarProductos();
 void buscarProductoPorCodigo();
@@ -27,8 +26,6 @@ void eliminarProducto();
 void reiniciarInventario();
 void menuInventario();
 
-
-// FUNCIONES AUXILIARES
 bool cargarProductos(vector<Producto>& productos);
 bool guardarProductos(const vector<Producto>& productos);
 int buscarIndiceProducto(const vector<Producto>& productos, int codigo);

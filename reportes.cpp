@@ -15,9 +15,7 @@ struct ProductoVendido {
 };
 
 
-// ===============================
 // MENU REPORTES
-// ===============================
 void menuReportes() {
 
     int opcion;
@@ -108,7 +106,6 @@ void menuReportes() {
 
     } while(opcion != 12);
 }
-
 
 
 // PRODUCTOS MENOR STOCK
@@ -288,7 +285,7 @@ void ventasTotalesDia() {
 // VENTAS POR MES
 void ventasPorMes() {
 
-    float ventasMes[12] = {0};
+    float ventasMes[12][31] = {0};
 
     ifstream archivo("ventas.dat", ios::binary);
 
@@ -308,7 +305,11 @@ void ventasPorMes() {
 
         sscanf(venta.fecha, "%d-%d-%d", &anio, &mes, &dia);
 
-        ventasMes[mes - 1] += venta.total;
+        if(mes >= 1 && mes <= 12 &&
+           dia >= 1 && dia <= 31) {
+
+            ventasMes[mes - 1][dia - 1] += venta.total;
+           }
 
         archivo.seekg(
             venta.detallesCount * sizeof(DetalleVenta),
@@ -338,8 +339,15 @@ void ventasPorMes() {
 
     for(int i = 0; i < 12; i++) {
 
+        float totalMes = 0;
+
+        for(int j = 0; j < 31; j++) {
+
+            totalMes += ventasMes[i][j];
+        }
+
         cout << "\n" << nombresMes[i]
-             << ": Q " << ventasMes[i];
+             << ": Q " << totalMes;
     }
 }
 
@@ -599,9 +607,7 @@ void ventasAcumuladas() {
     }
 }
 
-// ===============================
 // ESTADISTICAS GENERALES
-// ===============================
 void mostrarEstadisticas() {
 
     vector<Producto> productos;

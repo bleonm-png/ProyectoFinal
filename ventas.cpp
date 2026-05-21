@@ -51,9 +51,7 @@ void crearVenta() {
 
         int idx = -1;
 
-        // ===============================
         // BUSCAR POR CODIGO
-        // ===============================
         if(opcionBusqueda == 1) {
 
             int codigo;
@@ -64,9 +62,7 @@ void crearVenta() {
             idx = buscarIndiceProducto(productos, codigo);
         }
 
-        // ===============================
         // BUSCAR POR NOMBRE
-        // ===============================
         else if(opcionBusqueda == 2) {
 
             char nombreBuscado[40];
@@ -91,9 +87,7 @@ void crearVenta() {
             }
         }
 
-        // ===============================
         // FINALIZAR VENTA
-        // ===============================
         else if(opcionBusqueda == 3) {
 
             break;
@@ -106,9 +100,8 @@ void crearVenta() {
             continue;
         }
 
-        // ===============================
+
         // VALIDAR PRODUCTO
-        // ===============================
         if(idx == -1) {
 
             cout << "\nProducto no encontrado.\n";
