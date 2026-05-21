@@ -24,6 +24,9 @@ void buscarProductoPorNombre();
 void actualizarStock();
 void modificarPrecio();
 void eliminarProducto();
+void reiniciarInventario();
+void menuInventario();
+
 
 // FUNCIONES AUXILIARES
 bool cargarProductos(vector<Producto>& productos);

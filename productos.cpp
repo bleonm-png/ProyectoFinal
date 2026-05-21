@@ -10,24 +10,18 @@ using namespace std;
 // CARGAR PRODUCTOS
 
 bool cargarProductos(vector<Producto>& productos) {
-
     productos.clear();
-
     Producto p;
-
     ifstream archivo("productos.dat", ios::binary);
 
     if(!archivo) {
         return false;
     }
-
     while(archivo.read((char*)&p, sizeof(p))) {
 
         productos.push_back(p);
     }
-
     archivo.close();
-
     return true;
 }
 
@@ -168,13 +162,9 @@ void listarProductos() {
             cout << "\n---------------------------";
 
             cout << "\nCodigo: " << p.codigo;
-
             cout << "\nNombre: " << p.nombre;
-
             cout << "\nCategoria: " << p.categoria;
-
             cout << "\nStock: " << p.stock << " Unidades";
-
             cout << "\nPrecio: Q " << p.precio << "\n";
         }
     }
@@ -442,4 +432,72 @@ void eliminarProducto() {
 
         cout << "\nProducto no encontrado.\n";
     }
+}
+// REINICIAR INVENTARIO
+
+void reiniciarInventario() {
+
+    char confirmar;
+
+    cout << "\nSeguro que desea reiniciar inventario? (s/n): ";
+    cin >> confirmar;
+
+    if(confirmar == 's' || confirmar == 'S') {
+
+        ofstream archivo("productos.dat", ios::binary | ios::trunc);
+
+        archivo.close();
+
+        cout << "\nInventario reiniciado correctamente.\n";
+    }
+    else {
+
+        cout << "\nOperacion cancelada.\n";
+    }
+}
+
+// MENU INVENTARIO
+void menuInventario() {
+
+    int opcion;
+
+    do {
+
+        cout << "\n========== GESTION INVENTARIO ==========";
+
+        cout << "\n1. Actualizar stock";
+        cout << "\n2. Modificar precio";
+        cout << "\n3. Desactivar producto";
+        cout << "\n4. Reiniciar inventario";
+        cout << "\n5. Regresar";
+
+        cout << "\n\nSeleccione una opcion: ";
+        cin >> opcion;
+
+        switch(opcion) {
+
+            case 1:
+                actualizarStock();
+                break;
+
+            case 2:
+                modificarPrecio();
+                break;
+
+            case 3:
+                eliminarProducto();
+                break;
+
+            case 4:
+                reiniciarInventario();
+                break;
+
+            case 5:
+                break;
+
+            default:
+                cout << "\nOpcion invalida.\n";
+        }
+
+    } while(opcion != 5);
 }

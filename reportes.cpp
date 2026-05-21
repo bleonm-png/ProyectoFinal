@@ -32,13 +32,14 @@ void menuReportes() {
         cout << "\n2. Productos mas vendidos";
         cout << "\n3. Ventas totales del dia";
         cout << "\n4. Ventas por mes";
-        cout << "\n5. Ordenar precio ascendente";
-        cout << "\n6. Ordenar precio descendente";
-        cout << "\n7. Ordenar stock ascendente";
-        cout << "\n8. Ordenar stock descendente";
-        cout << "\n9. Ventas acumuladas por producto";
-        cout << "\n10. Exportar reporte a TXT";
-        cout << "\n11. Regresar";
+        cout << "\n5. Estadisticas generales";
+        cout << "\n6. Ordenar precio ascendente";
+        cout << "\n7. Ordenar precio descendente";
+        cout << "\n8. Ordenar stock ascendente";
+        cout << "\n9. Ordenar stock descendente";
+        cout << "\n10. Ventas acumuladas por producto";
+        cout << "\n11. Exportar reporte a TXT";
+        cout << "\n12. Regresar";
 
 
         cout << "\n\nSeleccione una opcion: ";
@@ -74,35 +75,38 @@ void menuReportes() {
             case 4:
                 ventasPorMes();
                 break;
-
             case 5:
-                ordenarPrecioAsc();
+                mostrarEstadisticas();
                 break;
 
             case 6:
+                ordenarPrecioAsc();
+                break;
+
+            case 7:
                 ordenarPrecioDesc();
                 break;
 
-           case 7:
+           case 8:
                 ordenarStockAsc();
                 break;
-           case 8:
+           case 9:
                 ordenarStockDesc();
                 break;
-           case 9:
+           case 10:
                 ventasAcumuladas();
                 break;
-           case 10:
+           case 11:
                 exportarReporteTXT();
                 break;
-           case 11:
+           case 12:
                 cout << "\nRegresando al menu principal...\n";
                 break;
             default:
                 cout << "\nOpcion invalida.\n";
         }
 
-    } while(opcion != 11);
+    } while(opcion != 12);
 }
 
 
@@ -351,20 +355,21 @@ void ordenarPrecioAsc() {
         return;
     }
 
-    // Bubble Sort
-    for(size_t i = 0; i < productos.size(); i++) {
+    // Insertion Sort
+    for(size_t i = 1; i < productos.size(); i++) {
 
-        for(size_t j = 0; j < productos.size() - 1; j++) {
+        Producto actual = productos[i];
 
-            if(productos[j].precio > productos[j + 1].precio) {
+        int j = i - 1;
 
-                Producto aux = productos[j];
+        while(j >= 0 && productos[j].precio > actual.precio) {
 
-                productos[j] = productos[j + 1];
+            productos[j + 1] = productos[j];
 
-                productos[j + 1] = aux;
-            }
+            j--;
         }
+
+        productos[j + 1] = actual;
     }
 
     cout << "\n========== PRECIOS ASCENDENTES ==========\n";
@@ -594,6 +599,76 @@ void ventasAcumuladas() {
     }
 }
 
+// ===============================
+// ESTADISTICAS GENERALES
+// ===============================
+void mostrarEstadisticas() {
+
+    vector<Producto> productos;
+
+    if(!cargarProductos(productos)) {
+
+        cout << "\nNo existe informacion de productos.\n";
+        return;
+    }
+
+    int totalProductos = 0;
+
+    int productosActivos = 0;
+
+    int stockTotal = 0;
+
+    for(const auto &p : productos) {
+
+        totalProductos++;
+
+        if(p.activo) {
+
+            productosActivos++;
+
+            stockTotal += p.stock;
+        }
+    }
+
+    ifstream archivo("ventas.dat", ios::binary);
+
+    int totalVentas = 0;
+
+    float ingresosTotales = 0;
+
+    VentaHeader venta;
+
+    while(archivo.read((char*)&venta, sizeof(venta))) {
+
+        totalVentas++;
+
+        ingresosTotales += venta.total;
+
+        archivo.seekg(
+            venta.detallesCount * sizeof(DetalleVenta),
+            ios::cur
+        );
+    }
+
+    archivo.close();
+
+    cout << "\n========== ESTADISTICAS ==========\n";
+
+    cout << "\nTotal productos: "
+         << totalProductos;
+
+    cout << "\nProductos activos: "
+         << productosActivos;
+
+    cout << "\nStock total disponible: "
+         << stockTotal;
+
+    cout << "\nTotal ventas realizadas: "
+         << totalVentas;
+
+    cout << "\nIngresos totales: Q "
+         << ingresosTotales << endl;
+}
 
 // EXPORTAR REPORTE TXT
 

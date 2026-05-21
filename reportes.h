@@ -8,12 +8,14 @@ void productosMenorStock();
 void productosMasVendidos();
 void ventasTotalesDia();
 void ventasPorMes();
+void mostrarEstadisticas();
 
 void ordenarPrecioAsc();
 void ordenarPrecioDesc();
 void ordenarStockAsc();
 void ordenarStockDesc();
 void ventasAcumuladas();
+
 
 void exportarReporteTXT();
 

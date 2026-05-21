@@ -13,9 +13,7 @@ using namespace std;
 void menu();
 
 int main() {
-
     menu();
-
     return 0;
 }
 
@@ -31,17 +29,14 @@ void menu() {
         cout << "\n===================================";
         cout << "\n SISTEMA DE VENTAS E INVENTARIO";
         cout << "\n===================================";
-
         cout << "\n1. Registrar producto";
         cout << "\n2. Listar productos";
         cout << "\n3. Buscar producto por codigo";
         cout << "\n4. Buscar producto por nombre";
-        cout << "\n5. Actualizar stock";
-        cout << "\n6. Modificar precio";
-        cout << "\n7. Eliminar/desactivar producto";
-        cout << "\n8. Crear venta";
-        cout << "\n9. Reportes";
-        cout << "\n10. Salir";
+        cout << "\n5. Gestion inventario";
+        cout << "\n6. Crear venta";
+        cout << "\n7. Reportes";
+        cout << "\n8. Salir";
 
         cout << "\n\nSeleccione una opcion: ";
         cin >> opcion;
@@ -65,26 +60,18 @@ void menu() {
                 break;
 
             case 5:
-                actualizarStock();
+                menuInventario();
                 break;
 
             case 6:
-                modificarPrecio();
-                break;
-
-            case 7:
-                eliminarProducto();
-                break;
-
-            case 8:
                 crearVenta();
                 break;
 
-            case 9:
+            case 7:
                 menuReportes();
                 break;
 
-            case 10:
+            case 8:
                 cout << "\nPrograma finalizado.\n";
                 break;
 
@@ -92,5 +79,5 @@ void menu() {
                 cout << "\nOpcion invalida.\n";
         }
 
-    } while(opcion != 10);
+    } while(opcion != 8);
 }
