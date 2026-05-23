@@ -24,8 +24,6 @@ void crearVenta() {
 
     vector<DetalleVenta> detalles;
 
-    int codigo;
-
     cout << "\n========== CREAR VENTA ==========\n";
 
     while(true) {
@@ -100,7 +98,6 @@ void crearVenta() {
             continue;
         }
 
-
         // VALIDAR PRODUCTO
         if(idx == -1) {
 
@@ -109,26 +106,32 @@ void crearVenta() {
             continue;
         }
 
-        if(idx == -1) {
+        int cantidad;
 
-            cout << "Producto no encontrado.\n";
+        cout << "\nCantidad: ";
+        cin >> cantidad;
+
+        if(cin.fail()) {
+
+            cout << "\nERROR: Debe ingresar numeros.\n";
+
+            cin.clear();
+            cin.ignore(1000, '\n');
+
             continue;
         }
 
-        int cantidad;
-
-        cout << "Cantidad: ";
-        cin >> cantidad;
-
         if(cantidad <= 0) {
 
-            cout << "Cantidad invalida.\n";
+            cout << "\nCantidad invalida.\n";
+
             continue;
         }
 
         if(productos[idx].stock < cantidad) {
 
-            cout << "Stock insuficiente.\n";
+            cout << "\nStock insuficiente.\n";
+
             continue;
         }
 
@@ -136,12 +139,14 @@ void crearVenta() {
 
         for(auto &d : detalles) {
 
-            if(d.codigo == codigo) {
+            if(d.codigo == productos[idx].codigo) {
 
                 if(productos[idx].stock < d.cantidad + cantidad) {
 
-                    cout << "Stock insuficiente.\n";
+                    cout << "\nStock insuficiente.\n";
+
                     repetido = true;
+
                     break;
                 }
 
@@ -159,15 +164,23 @@ void crearVenta() {
 
             DetalleVenta d;
 
-            d.codigo = codigo;
+            d.codigo = productos[idx].codigo;
+
+            strcpy(
+                d.nombreProducto,
+                productos[idx].nombre
+            );
+
             d.cantidad = cantidad;
+
             d.precioUnit = productos[idx].precio;
+
             d.subtotal = d.cantidad * d.precioUnit;
 
             detalles.push_back(d);
         }
 
-        cout << "Producto agregado.\n";
+        cout << "\nProducto agregado correctamente.\n";
     }
 
     if(detalles.empty()) {
@@ -218,20 +231,20 @@ void crearVenta() {
 
     for(const auto &d : detalles) {
 
-        int idx = buscarIndiceProducto(productos, d.codigo);
-
         cout << "\nCodigo: " << d.codigo;
 
-        cout << "\nNombre: " << productos[idx].nombre;
+        cout << "\nNombre: " << d.nombreProducto;
 
         cout << "\nCantidad: " << d.cantidad;
 
-        cout << "\nPrecio: Q " << d.precioUnit;
+        cout << "\nPrecio Unitario: Q " << d.precioUnit;
 
-        cout << "\nSubtotal: Q " << d.subtotal << "\n";
+        cout << "\nSubtotal: Q " << d.subtotal;
+
+        cout << "\n-----------------------------------";
     }
 
-    cout << "\nSubtotal: Q " << subtotal;
+    cout << "\n\nSubtotal: Q " << subtotal;
     cout << "\nDescuento: Q " << descuentoTotal;
     cout << "\nIVA: Q " << iva;
     cout << "\nTOTAL: Q " << total << endl;
@@ -253,7 +266,7 @@ void crearVenta() {
 
     if(inVentas) {
 
-        while(!inVentas.eof()) {
+        while(true) {
 
             VentaHeader vh;
 
@@ -262,7 +275,10 @@ void crearVenta() {
                 break;
             }
 
-            inVentas.seekg(vh.detallesCount * sizeof(DetalleVenta), ios::cur);
+            inVentas.seekg(
+                vh.detallesCount * sizeof(DetalleVenta),
+                ios::cur
+            );
 
             nextId = vh.id + 1;
         }
@@ -296,7 +312,10 @@ void crearVenta() {
 
     header.detallesCount = detalles.size();
 
-    ofstream outVentas("ventas.dat", ios::binary | ios::app);
+    ofstream outVentas(
+        "ventas.dat",
+        ios::binary | ios::app
+    );
 
     if(!outVentas) {
 
@@ -313,9 +332,13 @@ void crearVenta() {
 
     outVentas.close();
 
+    // ACTUALIZAR STOCK
     for(const auto &d : detalles) {
 
-        int idx = buscarIndiceProducto(productos, d.codigo);
+        int idx = buscarIndiceProducto(
+            productos,
+            d.codigo
+        );
 
         if(idx != -1) {
 

@@ -4,11 +4,15 @@
 struct DetalleVenta {
 
     int codigo;
+
+    char nombreProducto[40];
+
     int cantidad;
+
     float precioUnit;
+
     float subtotal;
 };
-
 
 struct VentaHeader {
 
