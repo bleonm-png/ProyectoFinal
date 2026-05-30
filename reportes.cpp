@@ -6,6 +6,7 @@
 #include "reportes.h"
 #include "productos.h"
 #include "ventas.h"
+#include "auxiliar.h"
 
 using namespace std;
 
@@ -47,9 +48,7 @@ void menuReportes() {
 
             cout << "\nERROR: Debe ingresar numeros.\n";
 
-            cin.clear();
-
-            cin.ignore(1000, '\n');
+            limpiarEntrada();
 
             opcion = 0;
 
@@ -696,20 +695,34 @@ void exportarReporteTXT() {
         return;
     }
 
-    reporte << "========== REPORTE PRODUCTOS ==========\n";
+    reporte << "========================================\n";
+    reporte << "     SISTEMA DE VENTAS E INVENTARIO\n";
+    reporte << "========================================\n";
+    reporte << "         REPORTE DE PRODUCTOS\n";
+    reporte << "========================================\n";
+
+    reporte << "Fecha de generacion: "
+            << __DATE__
+            << " "
+            << __TIME__
+            << "\n\n";
 
     for(const auto &p : productos) {
 
         if(p.activo) {
 
-            reporte << "\nCodigo: " << p.codigo;
-            reporte << "\nNombre: " << p.nombre;
-            reporte << "\nCategoria: " << p.categoria;
-            reporte << "\nStock: " << p.stock;
-            reporte << "\nPrecio: Q " << p.precio;
-            reporte << "\n-----------------------------------";
+            reporte << "\nCodigo    : " << p.codigo;
+            reporte << "\nNombre    : " << p.nombre;
+            reporte << "\nCategoria : " << p.categoria;
+            reporte << "\nStock     : " << p.stock;
+            reporte << "\nPrecio    : Q " << fixed << setprecision(2) << p.precio;
+            reporte << "\n----------------------------------------";
         }
     }
+
+    reporte << "\n\n========================================\n";
+    reporte << "Reporte generado automaticamente.\n";
+    reporte << "========================================\n";
 
     reporte.close();
 

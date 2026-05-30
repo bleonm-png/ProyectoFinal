@@ -1,7 +1,7 @@
 //==============================
 // BERTHA JASSEL LEON MELCHOR
 //=============================
-
+#include <stdexcept>
 #include <iostream>
 #include <iomanip>
 #include "productos.h"
@@ -13,7 +13,19 @@ using namespace std;
 void menu();
 
 int main() {
-    menu();
+
+    try {
+
+        menu();
+
+    } catch(const exception& e) {
+
+        cout << "\n===================================";
+        cout << "\n ERROR DEL SISTEMA";
+        cout << "\n===================================";
+        cout << "\n" << e.what() << endl;
+    }
+
     return 0;
 }
 
@@ -28,6 +40,9 @@ void menu() {
 
         cout << "\n===================================";
         cout << "\n SISTEMA DE VENTAS E INVENTARIO";
+        cout << "\n===================================";
+        cout << "\n Autor: Bertha Jassel Leon Melchor";
+        cout << "\n Carnet: 9941.25.15593";
         cout << "\n===================================";
         cout << "\n1. Registrar producto";
         cout << "\n2. Listar productos";

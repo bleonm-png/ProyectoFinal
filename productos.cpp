@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <vector>
-
+#include "auxiliar.h"
 #include "productos.h"
 
 using namespace std;
@@ -90,7 +90,7 @@ void registrarProducto() {
             }
         }
 
-        cin.ignore(1000, '\n');
+        limpiarEntrada();
 
         cout << "Nombre: ";
         cin.getline(producto.nombre, 40);
@@ -134,8 +134,7 @@ void registrarProducto() {
 
         cout << "\nERROR: " << mensaje << "\n";
 
-        cin.clear();
-        cin.ignore(1000, '\n');
+        limpiarEntrada();
     }
 }
 
@@ -185,8 +184,7 @@ void buscarProductoPorCodigo() {
 
         cout << "\nERROR: Debe ingresar un numero.\n";
 
-        cin.clear();
-        cin.ignore(1000, '\n');
+        limpiarEntrada();
 
         return;
     }
@@ -235,7 +233,7 @@ void buscarProductoPorNombre() {
 
     char nombreBuscado[40];
 
-    cin.ignore();
+    limpiarEntrada();
 
     cout << "\nIngrese el nombre: ";
 

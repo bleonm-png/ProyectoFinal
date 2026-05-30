@@ -41,8 +41,7 @@ void crearVenta() {
 
             cout << "\nERROR: Debe ingresar numeros.\n";
 
-            cin.clear();
-            cin.ignore(1000, '\n');
+            limpiarEntrada();
 
             continue;
         }
@@ -65,7 +64,7 @@ void crearVenta() {
 
             char nombreBuscado[40];
 
-            cin.ignore(1000, '\n');
+            limpiarEntrada();
 
             cout << "\nNombre producto: ";
 
@@ -115,8 +114,7 @@ void crearVenta() {
 
             cout << "\nERROR: Debe ingresar numeros.\n";
 
-            cin.clear();
-            cin.ignore(1000, '\n');
+            limpiarEntrada();
 
             continue;
         }
